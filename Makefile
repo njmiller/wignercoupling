@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -g -O3 -march=native
+CFLAGS = -g -O3 -march=corei7
 LIBS =
 
 OBJ       = wigner3j.o wigner6j.o wigner9j.o

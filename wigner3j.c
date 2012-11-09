@@ -5,34 +5,34 @@
 #include <stdlib.h>
 
 double Zj(double j, double j1, double j2, double m1, double m2) {
-    double tempa, tempb, tempc, tempd;
+	double tempa, tempb, tempc, tempd;
 
-    tempa = (j+1);
-    tempb = pow(j,2) - pow(j1-j2,2);
-    tempc = pow(j1+j2+1,2) - pow(j,2);
-    tempd = pow(j,2) - pow(m1+m2,2);
+	tempa = (j+1);
+	tempb = pow(j,2) - pow(j1-j2,2);
+	tempc = pow(j1+j2+1,2) - pow(j,2);
+	tempd = pow(j,2) - pow(m1+m2,2);
 
-    return tempa*sqrt(tempb*tempc*tempd);
+	return tempa*sqrt(tempb*tempc*tempd);
 }
 
 double Yj(double j, double j1, double j2, double m1, double m2) {
-    double tempa, tempb, tempc;
+	double tempa, tempb, tempc;
 
-    tempa = (m1+m2)*(j1*(j1+1)-j2*(j2+1));
-    tempb = (m1-m2)*j*(j+1);
-    tempc = (2*j+1)*(tempa-tempb);
-    //cout << tempa << "  " << tempb << "  " << tempc << endl;
-    return tempc;
+	tempa = (m1+m2)*(j1*(j1+1)-j2*(j2+1));
+	tempb = (m1-m2)*j*(j+1);
+	tempc = (2*j+1)*(tempa-tempb);
+    
+	return tempc;
 }
 
 double Xj(double j, double j1, double j2, double m1, double m2) {
-    double tempa, tempb, tempc;
+	double tempa, tempb, tempc;
 
-    tempa = pow(j+1,2.) - pow(j1-j2,2);
-    tempb = pow(j1+j2+1,2.) - pow(j+1,2);
-    tempc = pow(j+1,2.) - pow(m1+m2,2);
+	tempa = pow(j+1,2.) - pow(j1-j2,2);
+	tempb = pow(j1+j2+1,2.) - pow(j+1,2);
+	tempc = pow(j+1,2.) - pow(m1+m2,2);
 
-    return j*sqrt(tempa*tempb*tempc);
+	return j*sqrt(tempa*tempb*tempc);
 }
 
 
