@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include "wignercoupling.h"
 
-double Wigner9j(int tj1, int tj2, int tJ12, int tj3, int tj4, int tJ34, int tJ13, int tJ24, int tJ) {
+double wigner9j(int tj1, int tj2, int tJ12, int tj3, int tj4, int tJ34, int tJ13, int tJ24, int tJ) {
     //calculate in terms of 6j symbols or 3j symbols
     //looks to be easier with 6j symbols since only one sum and not 6 as for 3j symbols
 
@@ -53,9 +53,9 @@ double Wigner9j(int tj1, int tj2, int tJ12, int tj3, int tj4, int tJ34, int tJ13
     NumG = (int) (maxg - ming);
 
 	//Three different families
-    Fam1 = Wigner6jVect(tJ34,tJ,tj1,tj2,tJ12,&NormVal1);
-    Fam2 = Wigner6jVect(tj2,tJ24,tj3,tJ34,tj4,&NormVal2);
-    Fam3 = Wigner6jVect(tj1,tj3,tJ13,tJ24,tJ,&NormVal3);
+    Fam1 = wigner6jvect(tJ34,tJ,tj1,tj2,tJ12,&NormVal1);
+    Fam2 = wigner6jvect(tj2,tJ24,tj3,tJ34,tj4,&NormVal2);
+    Fam3 = wigner6jvect(tj1,tj3,tJ13,tJ24,tJ,&NormVal3);
 
     tmaxg = (int) 2*maxg;
     tming = (int) 2*ming;

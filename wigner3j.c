@@ -227,7 +227,7 @@ double* SpecCase3(double j1, double j2, double m1, double m2, double *NormVal) {
 
 }
 
-double* Wigner3jVect(int tj1, int tj2, int tm1, int tm2, double *NormVal) {
+double* wigner3jvect(int tj1, int tj2, int tm1, int tm2, double *NormVal) {
     //returns a vector with Wigner 3j values for the family (j1 j2    j  )
     //                                                      (m1 m2 -m1-m2)
 
@@ -358,7 +358,7 @@ double* Wigner3jVect(int tj1, int tj2, int tm1, int tm2, double *NormVal) {
     return um;
 }
 
-double Wigner3j(int tj1, int tj2, int tj3, int tm1, int tm2, int tm3) {
+double wigner3j(int tj1, int tj2, int tj3, int tm1, int tm2, int tm3) {
 
     double *WigVal, WigRet, jmin, tempa, tempb, j1, j2, j3, m1, m2, m3, NormVal, jmax;
     int temp3;
@@ -390,7 +390,7 @@ double Wigner3j(int tj1, int tj2, int tj3, int tm1, int tm2, int tm3) {
     tempb = (m1+m2 > 0) ? m1+m2 : -m1-m2;
     jmin = (tempa > tempb) ? tempa : tempb;
 
-    WigVal = Wigner3jVect(tj1, tj2, tm1, tm2, &NormVal);
+    WigVal = wigner3jvect(tj1, tj2, tm1, tm2, &NormVal);
     temp3 = (int) (j3-jmin);
 
 	WigRet = WigVal[temp3]*NormVal;
@@ -399,26 +399,26 @@ double Wigner3j(int tj1, int tj2, int tj3, int tm1, int tm2, int tm3) {
     return WigRet;
 }
 
-double ClebschGordon(int tj1, int tj2, int tj3, int tm1, int tm2, int tm3) {
+double clebschgordon(int tj1, int tj2, int tj3, int tm1, int tm2, int tm3) {
     double WigVal, j1, j2, m3;
 
     j1 = (double) tj1 / 2.;
     j2 = (double) tj2 / 2.;
     m3 = (double) tm3 / 2.;
 
-    WigVal = Wigner3j(tj1,tj2,tj3,tm1,tm2,tm3);
+    WigVal = wigner3j(tj1,tj2,tj3,tm1,tm2,tm3);
 
     return pow(-1.,m3+j1-j2) * sqrt((double)tj3+1.) * WigVal;
 }
 
 
-double RacahV(int tj1, int tj2, int tj3, int tm1, int tm2, int tm3) {
+double racahv(int tj1, int tj2, int tj3, int tm1, int tm2, int tm3) {
     double WigVal, j3, m3;
 
     j3 = (double) tj3 / 2.;
     m3 = (double) tm3 / 2.;
 
-    WigVal = Wigner3j(tj2,tj2,tj3,tm1,tm2,tm3);
+    WigVal = wigner3j(tj2,tj2,tj3,tm1,tm2,tm3);
 
     return pow(-1.,j3+m3)*WigVal;
 }

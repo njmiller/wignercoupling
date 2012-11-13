@@ -203,7 +203,7 @@ double* SpecCase6j3(double j1, double j2, double k1, double k2, double k3, doubl
 	return um;
 }
 
-double* Wigner6jVect(int tj1, int tj2, int tk1, int tk2, int tk3, double *NormVal) {
+double* wigner6jvect(int tj1, int tj2, int tk1, int tk2, int tk3, double *NormVal) {
     //can do something similar to 3j symbols
     //follow Luscombe and Luban doc for Xj, Yj, and Zj
     //vectorized version which will return all values in the family
@@ -340,7 +340,7 @@ double* Wigner6jVect(int tj1, int tj2, int tk1, int tk2, int tk3, double *NormVa
     return um;
 }
 
-double Wigner6j(int tj1, int tj2, int tj3, int tk1, int tk2, int tk3) {
+double wigner6j(int tj1, int tj2, int tj3, int tk1, int tk2, int tk3) {
 
     double Triad[4][3], TriadM, TriadP, tempa, tempb;
     double jmin, *WigVal, WigRet, NormVal, j1, j2, j3, k1, k2, k3;
@@ -374,19 +374,19 @@ double Wigner6j(int tj1, int tj2, int tj3, int tk1, int tk2, int tk3) {
     tempb = ((k1-k2) > 0) ? k1-k2 : k2-k1;
     jmin = (tempa > tempb) ? tempa : tempb; //minimum valid j3
 
-    WigVal = Wigner6jVect(tj1, tj2, tk1, tk2, tk3, &NormVal);
+    WigVal = wigner6jvect(tj1, tj2, tk1, tk2, tk3, &NormVal);
     WigRet = NormVal*WigVal[(int) (j3-jmin)];
 	free(WigVal);
 
 	return WigRet;
 }
 
-double RacahW(int ta, int tb, int tc, int td, int te, int tf) {
+double racahw(int ta, int tb, int tc, int td, int te, int tf) {
     double WigVal, powval;
 
     powval = (double) (ta+tb+tc+td) / 2.;
 
-    WigVal = Wigner6j(ta,tb,tc,td,te,tf);
+    WigVal = wigner6j(ta,tb,tc,td,te,tf);
 
     return pow(-1.,powval)*WigVal;
 }
