@@ -1,3 +1,5 @@
 *.o
 test_wigner
 *.a
+*.swp
+*.mod
