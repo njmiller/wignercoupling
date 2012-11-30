@@ -36,13 +36,13 @@ double Xj(double j, double j1, double j2, double m1, double m2) {
 }
 
 
-double* SpecCase1(double j1, double j2, double m1, double m2, double *NormVal) {
+double* SpecCase1(double j1, double j2, double m1, double m2) {
     //uses three term recursion and normalization to do all
     //this is the vectorized version
 
     double tempa, tempb, tempval2, Xjval, Zjval, j1pj2, jcent, absm;
     int ngo, i, Nj;
-    double *wigvals, jmax, jmin, DVal, SVal;
+    double *wigvals, jmax, jmin, DVal, SVal, norm;
 
     jmax = j1+j2;
     tempa = (j1-j2 > 0) ? j1-j2 : j2-j1;
@@ -59,7 +59,6 @@ double* SpecCase1(double j1, double j2, double m1, double m2, double *NormVal) {
     if ((j1 == 0 && m1 == 0) || (j2 == 0 && m2 == 0)) {
         //since m1 = 0 and/or m2 = 0 then m1+m2 is value of non-zero term
         wigvals[0] = pow(-1.,jmin+m1+m2) / sqrt(2.*jmin+1.);
-        *NormVal = 1;
         return wigvals;
     }
 
@@ -81,18 +80,21 @@ double* SpecCase1(double j1, double j2, double m1, double m2, double *NormVal) {
 
     SVal = pow(-1.,j1-j2+m1+m2);
 
-    *NormVal = SVal / DVal;
+    norm = SVal / DVal;
+	for (i=0;i<Nj;i++) {
+		wigvals[i] *= norm;
+	}
 
     return wigvals;
 
 }
 
-double* SpecCase2(double j1, double j2, double m1, double m2, double *NormVal) {
+double* SpecCase2(double j1, double j2, double m1, double m2) {
     //This is case where Yjmax = 0. Upper end recursion can't get started
     //use two term lower end recursion, then 3-term recursion for all other terms
 
     double *s, *um, DVal, SVal, Yjmin, tempa, tempb, jmax, jmin, jm;
-    double jval, tempa2;
+    double jval, tempa2, norm;
     int i, k, Nj, a, Nj2;
 
     jmax = j1+j2;
@@ -155,16 +157,20 @@ double* SpecCase2(double j1, double j2, double m1, double m2, double *NormVal) {
 	//free memory
     free(s);
 
-    *NormVal = SVal / DVal;
+    norm = SVal / DVal;
+	for (i=0;i<Nj;i++) {
+		um[i] *= norm;
+	}
+
     return um;
 }
 
-double* SpecCase3(double j1, double j2, double m1, double m2, double *NormVal) {
+double* SpecCase3(double j1, double j2, double m1, double m2) {
     //This is the one where Yjmin = 0. Do Same thing as special case 2 except
     //use the higher end instead of lower end
 
     double *r, *um, DVal, SVal, Yjmax, tempa, tempb, jmax, jmin, jp;
-    double jval, tempa2;
+    double jval, tempa2, norm;
     int i, k, Nj, a, Nj2;
 
     jmax = j1+j2;
@@ -222,17 +228,21 @@ double* SpecCase3(double j1, double j2, double m1, double m2, double *NormVal) {
     DVal = sqrt(DVal);
 
     free(r);
-    *NormVal = SVal / DVal;
+
+    norm = SVal / DVal;
+	for (i=0;i<Nj;i++) {
+		um[i] *= norm;
+	}
     return um;
 
 }
 
-double* wigner3jvect(int tj1, int tj2, int tm1, int tm2, double *NormVal) {
+double* wigner3jvect(int tj1, int tj2, int tm1, int tm2) {
     //returns a vector with Wigner 3j values for the family (j1 j2    j  )
     //                                                      (m1 m2 -m1-m2)
 
     double j1, j2, j3, m1, m2, m3, jmin, jmax, tempa, tempb, Yjmax, Yjmin;
-    double *r, *s, *um, jp, jm, jval, *WigVal, D, Sval, tempa2;
+    double *r, *s, *um, jp, jm, jval, *WigVal, D, Sval, tempa2, norm;
     int Nj, i, j, k, Nj2, a, t1, t2;
 
     j1 = (double)tj1 / 2.;
@@ -265,13 +275,13 @@ double* wigner3jvect(int tj1, int tj2, int tm1, int tm2, double *NormVal) {
 	//Special Cases require something different as we can't get the recursion started at one 
 	//(or both) ends
     if (Yjmax == 0 && Yjmin == 0) {
-        WigVal = SpecCase1(j1,j2,m1,m2,NormVal);
+        WigVal = SpecCase1(j1,j2,m1,m2);
         return WigVal;
     } else if (Yjmax == 0) {
-        WigVal = SpecCase2(j1,j2,m1,m2,NormVal);
+        WigVal = SpecCase2(j1,j2,m1,m2);
         return WigVal;
     } else if (Yjmin == 0) {
-        WigVal = SpecCase3(j1,j2,m1,m2,NormVal);
+        WigVal = SpecCase3(j1,j2,m1,m2);
         return WigVal;
     }
 
@@ -354,13 +364,19 @@ double* wigner3jvect(int tj1, int tj2, int tm1, int tm2, double *NormVal) {
 
     free(r);
     free(s);
-    *NormVal = Sval / D;
+
+    norm = Sval / D;
+	
+	for (i=0;i<Nj;i++) {
+		um[i] *= norm;
+	}
+
     return um;
 }
 
 double wigner3j(int tj1, int tj2, int tj3, int tm1, int tm2, int tm3) {
 
-    double *WigVal, WigRet, jmin, tempa, tempb, j1, j2, j3, m1, m2, m3, NormVal, jmax;
+    double *WigVal, WigRet, jmin, tempa, tempb, j1, j2, j3, m1, m2, m3, jmax;
     int temp3;
 
     j1 = (double) tj1 / 2.;
@@ -390,10 +406,10 @@ double wigner3j(int tj1, int tj2, int tj3, int tm1, int tm2, int tm3) {
     tempb = (m1+m2 > 0) ? m1+m2 : -m1-m2;
     jmin = (tempa > tempb) ? tempa : tempb;
 
-    WigVal = wigner3jvect(tj1, tj2, tm1, tm2, &NormVal);
+    WigVal = wigner3jvect(tj1, tj2, tm1, tm2);
     temp3 = (int) (j3-jmin);
 
-	WigRet = WigVal[temp3]*NormVal;
+	WigRet = WigVal[temp3];
 	free(WigVal);
 
     return WigRet;

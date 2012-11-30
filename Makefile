@@ -14,7 +14,7 @@ lib: $(OBJ)
 	ar -r libwignercoupling.a $(OBJ)
 
 test: $(OBJ) $(OBJTEST)
-	$(CC) $(CFLAGS) $(LIBS) $(OBJ) test_wigner.o -o test_wigner -L./ -lwignercoupling
+	$(CC) $(CFLAGS) $(LIBS) $(OBJ) test_wigner.o -o test_wigner -L./ -lwignercoupling -lgfortran
 	$(F90) $(FFLAGS) $(LIBS) $(OBJ) test_wignerf.o -o test_wignerf -L./ -lwignercoupling
 
 %.o: %.c
