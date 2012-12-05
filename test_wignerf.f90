@@ -19,5 +19,6 @@ program test_wigner
 
 	write (*,*) wigner3jvectf(2*2,2*2,(-2+1)*2,2*2)
 	write (*,*) wigner3jvectf(2*2,2*2,(2-1)*2,-2*2)
+	write (*,*) wigner3jvectf(200*2,2*2,0,0)
 
 end program test_wigner

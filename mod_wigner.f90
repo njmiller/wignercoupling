@@ -79,13 +79,13 @@ contains
 
     	Nj = (tjmax-tjmin)/2 + 1
 	
-		!For some reason that I don't understand having wigner3jvectf as a
-		!pointer leads to segmentation faults
 		call c_f_pointer(wigvals,wigner3jtmp,[Nj])
 
 		!See if I can make better array bounds
 		allocate(wigner3jvectf(Nj))
 		wigner3jvectf(:) = wigner3jtmp(:)
+
+		deallocate(wigner3jtmp)
 
 	end function wigner3jvectf
 
