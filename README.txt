@@ -4,4 +4,4 @@ This calculation is based off of a recursive formula and not factorials so it sh
 
 Bindings for IDL and Fortran were also written.
 
-This was written over around 2010 or even earlier, so there may be more useful libraries now. I am not sure how much this version was tested as I rewrote it in Python because I mainly use that for code now and tested that version much more.
+This was written in the mid 2000s so there may be more useful libraries now. I am not sure how much this version was tested as I rewrote it in Python because I mainly use that for code now and tested that version much more.
