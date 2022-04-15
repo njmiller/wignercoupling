@@ -43,6 +43,8 @@ double* SpecCase1(double j1, double j2, double m1, double m2) {
     double tempa, tempb, tempval2, Xjval, Zjval, j1pj2, jcent, absm;
     int ngo, i, Nj;
     double *wigvals, jmax, jmin, DVal, SVal, norm;
+	
+	printf("Special Case 1\n");
 
     jmax = j1+j2;
     tempa = (j1-j2 > 0) ? j1-j2 : j2-j1;
@@ -92,10 +94,12 @@ double* SpecCase1(double j1, double j2, double m1, double m2) {
 double* SpecCase2(double j1, double j2, double m1, double m2) {
     //This is case where Yjmax = 0. Upper end recursion can't get started
     //use two term lower end recursion, then 3-term recursion for all other terms
-
+	
     double *s, *um, DVal, SVal, Yjmin, tempa, tempb, jmax, jmin, jm;
     double jval, tempa2, norm;
     int i, k, Nj, a, Nj2;
+	
+	printf("Special Case 2\n");
 
     jmax = j1+j2;
     tempa = (j1-j2 > 0) ? j1-j2 : j2-j1;
@@ -147,7 +151,7 @@ double* SpecCase2(double j1, double j2, double m1, double m2) {
         um[a] = tempa / tempb;
         DVal += (2.*jval+1.)*pow(um[a],2); //part of normalization
     }
-
+	
 	//normalization
     SVal = (um[Nj-1] > 0) ? 1 : -1;
     SVal *= pow(-1.,j1-j2+m1+m2);
@@ -172,6 +176,8 @@ double* SpecCase3(double j1, double j2, double m1, double m2) {
     double *r, *um, DVal, SVal, Yjmax, tempa, tempb, jmax, jmin, jp;
     double jval, tempa2, norm;
     int i, k, Nj, a, Nj2;
+	
+	printf("Special Case 3\n");
 
     jmax = j1+j2;
     tempa = (j1-j2 > 0) ? j1-j2 : j2-j1;
@@ -237,6 +243,11 @@ double* SpecCase3(double j1, double j2, double m1, double m2) {
 
 }
 
+double normcase(int j1, int j2, int m1, int m2) {
+	//the normal case
+	
+}
+
 double* wigner3jvect(int tj1, int tj2, int tm1, int tm2) {
     //returns a vector with Wigner 3j values for the family (j1 j2    j  )
     //                                                      (m1 m2 -m1-m2)
@@ -283,11 +294,21 @@ double* wigner3jvect(int tj1, int tj2, int tm1, int tm2) {
     } else if (Yjmin == 0) {
         WigVal = SpecCase3(j1,j2,m1,m2);
         return WigVal;
-    }
+    } //else {
+	//	WigVal = normcase(j1,j2,m1,m2);
+	//}
+	
+	printf("Normal Case\n");
 
 	r = (double *) malloc(sizeof(double)*Nj);
     s = (double *) malloc(sizeof(double)*Nj);
     um = (double *) malloc(sizeof(double)*Nj);
+
+	for (i=0;i<Nj;i++) {
+		r[i] = 0;
+		s[i] = 0;
+		um[i] = 0;
+	}
 
 	//Start at the upper end and do two-term recursion
 	//End when the abs(ratios) start to become > 1
@@ -302,7 +323,7 @@ double* wigner3jvect(int tj1, int tj2, int tm1, int tm2) {
         tempa2 = (tempa > 0) ? tempa : -tempa;
         if (i == Nj-1) tempa2 = 1.5; //in case of cases where never get > 1
     }
-	
+
     jp = jmax-i;
     jp = (jp > jmin) ? jp : jmin;
 
@@ -319,7 +340,7 @@ double* wigner3jvect(int tj1, int tj2, int tm1, int tm2) {
         tempa2 = (tempa > 0) ? tempa : -tempa;
         if (i == Nj-1) tempa2 = 1.5; //in case of cases where never get > 1
     }
-
+	
     jm = jmin+i;
     jm = (jm < jmax) ? jm : jmax;
 
@@ -333,7 +354,7 @@ double* wigner3jvect(int tj1, int tj2, int tm1, int tm2) {
         a = (int) (jm-k-jmin);
         um[a] = um[a+1]*s[a];
     }
-
+	
 	//normal 3-term recursion
     Nj2 = (int) (jp-jm);
     for (i=1;i<=Nj2;i++) {
@@ -343,14 +364,13 @@ double* wigner3jvect(int tj1, int tj2, int tm1, int tm2) {
         tempb = Xj(jval-1,j1,j2,m1,m2);
         um[a] = tempa / tempb;
     }
-
+	
 	//upper end with ratios calculated earlier
     for (k=1;k<=(int)(jmax-jp);k++) {
         a = (int) (jp+k-jmin);
-        um[a] = um[a-1]*r[a];
-        
+        um[a] = um[a-1]*r[a];    
     }
-
+	
 	//calculation of the normalization constant
     tempa = (um[Nj-1] > 0) ? 1 : -1;
     Sval = tempa * pow(-1.,j1-j2+m1+m2);

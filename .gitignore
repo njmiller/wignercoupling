@@ -1,5 +1,6 @@
 *.o
 test_wigner
+test_wignerf
 *.a
 *.swp
 *.mod
